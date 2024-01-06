@@ -171,10 +171,10 @@ class Board
 }
 
 
-
+/* Test Code
 var board = new Board(6, 6);
 
-for (let i = 0; i < 6; i++)
+for (let i = 0; i < 6; i++) 
     for (let j = 0; j < 6; j++)
         board.board[i][j] = 2;
 console.table(board.board);
@@ -211,3 +211,4 @@ board.reset();
 console.table(board.board);
 console.log(board.getScore())
 console.log(board.getStatus());
+*/
