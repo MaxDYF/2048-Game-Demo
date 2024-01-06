@@ -17,7 +17,7 @@ class Board
                 this.board[i][j] = 0;
         }
         this.N = col
-        this.M = row
+        this.M = row 
         this.stage = 1;
         this.score = 0;
     }
