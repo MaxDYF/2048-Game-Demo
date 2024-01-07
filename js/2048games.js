@@ -20,6 +20,7 @@ class Board
         this.M = row 
         this.stage = 1;
         this.score = 0;
+        this.moveTrack = new Array();
     }
     moveHorizontal(step)    
     /*  水平移动
@@ -28,9 +29,10 @@ class Board
      *  -1 = 向左移动
      */ 
     {
+        this.moveTrack = [];
         const N = this.N, M = this.M;
         let movable = false;
-        for (let j = step > 0 ? (M - 1) : 0; step > 0 ? j >= 0 :j < M; step > 0 ? j-- : j++)
+        for (let j = step > 0 ? (M - 2) : 1; step > 0 ? j >= 0 :j < M; step > 0 ? j-- : j++)
         {
             for (let i = 0; i < N; i++)
             {
@@ -42,6 +44,7 @@ class Board
                 if (this.board[i][dest] == 0)
                 {
                     this.board[i][dest] = this.board[i][j];
+                    this.moveTrack.push([i, j, i, dest]);
                     this.board[i][j] = 0;
                     movable = true;
                 }
@@ -50,6 +53,7 @@ class Board
                     this.board[i][dest] *= 2;
                     this.score += this.board[i][dest];
                     this.stage = Math.max(this.stage, Math.round(Math.log2(this.board[i][dest])));
+                    this.moveTrack.push([i, j, i, dest]);
                     this.board[i][j] = 0;
                     movable = true;
                 }
@@ -57,12 +61,14 @@ class Board
                 {
                     dest -= step;
                     this.board[i][dest] = this.board[i][j];
+                    this.moveTrack.push([i, j, i, dest]);
                     this.board[i][j] = 0;
                     movable = true;
                 }
             }
         }
-        return movable;
+        console.log(movable);
+        return !movable;
     }
     moveVertical(step) 
     /*  竖直移动
@@ -71,9 +77,10 @@ class Board
      *  -1 = 向上移动
      */ 
     {
+        this.moveTrack = [];
         const N = this.N, M = this.M;
         let movable = false;
-        for (let i = step > 0 ? N - 2 : 0; step > 0 ? i >= 0 : i < N; step > 0 ? i-- : i++)
+        for (let i = step > 0 ? N - 2 : 1; step > 0 ? i >= 0 : i < N; step > 0 ? i-- : i++)
         {
             for (let j = 0; j < M; j++)
             {
@@ -85,6 +92,7 @@ class Board
                 if (this.board[dest][j] == 0)
                 {
                     this.board[dest][j] = this.board[i][j];
+                    this.moveTrack.push([i, j, dest, j]);
                     this.board[i][j] = 0;
                     movable = true;
                 }
@@ -93,6 +101,7 @@ class Board
                     this.board[dest][j] *= 2;
                     this.score += this.board[dest][j];
                     this.stage = Math.max(this.stage, Math.round(Math.log2(this.board[dest][j])));
+                    this.moveTrack.push([i, j, dest, j]);
                     this.board[i][j] = 0;
                     movable = true;
                 }
@@ -100,11 +109,14 @@ class Board
                 {
                     dest -= step;
                     this.board[dest][j] = this.board[i][j];
+                    this.moveTrack.push([i, j, dest, j]);
                     this.board[i][j] = 0;
                     movable = true;
                 }
             }
         }
+        console.log(movable);
+        return !movable;
     }
     randomSummon()
     /*  随机在空位生成一个数字 
@@ -126,7 +138,7 @@ class Board
         // 随机确定空位
         let id = Math.round(Math.random() * (vec.length - 1));
         this.board[vec[id][0]][vec[id][1]] = x;
-        return false;
+        return [vec[id][0], vec[id][1], x];
     }
     
     getStatus()
@@ -150,7 +162,7 @@ class Board
                 if (j < this.M - 1 && (this.board[i][j + 1] == this.board[i][j] || this.board[i][j + 1] == 0))
                     movable = true;
             }
-        return !movable;
+        return movable != true;
     }
     getScore()
     /* 获取当前分数 */
