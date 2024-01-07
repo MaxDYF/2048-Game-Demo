@@ -3,13 +3,13 @@
 	margin: 0 auto;
 	text-align: center;
 }
-#header .title1{
+#header .title{
 	font: bold 50px Arial;
-	color:#776e65;
+	color:#0075b8;
 	margin:0 auto;
 }
 
-#header .title2{
+#header .subtitle{
 	font:normal 18px Arial;
 	margin:10px auto;
 	padding-left:20%;
@@ -23,27 +23,27 @@
 }
 #header .score-wrapper{
 	width:120px;
-	background-color:#8f7a66;
+	background-color:#005e91;
 	padding:6px;
 	border-radius:6px;
 }
 #header .score-wrapper #txt{
 	font: 20px Arial;
-	color:#d2c1c1;
+	color:#7dc4ff;
 }
 #header .score-wrapper #score{
 	color:#fff;
 	font-size:25px;
 	font-family: Arial;
-	vertical-align:middle;
+	vertical-align: middle;
 
 }
 #header .newgame-wrapper #newgame-buttom{
 	width:120px;
 	display:block;
-	background-color:#8f7a66;
+	background-color:#005e91;
 	text-decoration:none;
-	padding:13px;
+	padding:16px;
 	border-radius:6px;
 	color:#fff;
 	font:bold 25px Arial;
@@ -71,6 +71,7 @@
 
 #grid-container .number-cell-0{
 	background-color: #00131b;
+	font-size: 40px;
 	position:absolute;
 }
 #grid-container .number-cell-2{

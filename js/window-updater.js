@@ -27,30 +27,34 @@ function newgame(){
             $(gridCell).css('left', getPosLeft(i, j));
         }
     board.reset();
-    updateView(board);
+    updateView(board, []);
 
 	//在随机的两个单元格生成数字
     setTimeout(function(){
         let vec1 = board.randomSummon();
         let vec2 = board.randomSummon();
-        showNumberWihthAnimation(vec1[0], vec1[1], vec1[2]);
-        showNumberWihthAnimation(vec2[0], vec2[1], vec2[2]);
-        updateView(board);
+        updateView(board, [vec1, vec2]);
     }, 200);
 
 }
 
-function updateView(board)
+function updateView(board, new_summon)
 {
     let vec = board.moveTrack;
     for (let i = 0; i < board.moveTrack.length; i++)
         showMoveAnimation(vec[i][0], vec[i][1], vec[i][2], vec[i][3]);
+    setTimeout(function()
+    {
+        for (let i = 0; i < new_summon.length; i++)
+            showNumberWihthAnimation(new_summon[i][0], new_summon[i][1], new_summon[i][2]);
+    }, 60);
     setTimeout(function(){
         for (let i = 0; i < N; i++)
         {
             for (let j = 0; j < M; j++)
             {
                 $("#number-cell-" + i + '-' + j).remove();
+                $("#number-cell-" + i + '-' + j + '-1').remove();
                 let cmd = '<div class="number-cell-' + board.board[i][j] + '" id="number-cell-' + i + '-' + j + '"></div>';
                 //console.log(cmd);
                 $("#grid-container").append(cmd);
@@ -70,13 +74,12 @@ function updateView(board)
                     numberCell.css('top', getPosTop(i, j) + cellWidth / 2);
                     numberCell.css('left', getPosLeft(i, j) + cellWidth / 2);
                     numberCell.css('width', 0);
-                    numberCell.css('height', 0);                
+                    numberCell.css('height', 0);  
                 }
             }
         }
-    }, 150);
-
-    $("#score").text(board.score);
+        $("#score").text(board.score);
+    }, 160);
 }
 function isGameOver()
 {
@@ -91,21 +94,6 @@ function isGameOver()
 
 
 
-
-// 使用节流函数限制处理频率
-function throttle(callback, delay) {
-    let lastTime = 0;
-  
-    return function() {
-      const now = new Date().getTime();
-  
-      if (now - lastTime >= delay) {
-        callback.apply(this, arguments);
-        lastTime = now;
-      }
-    };
-  }
-  
 // 引入节流函数，限制键盘输入频率，以达到控制动画不出错的效果。
 const handleKeyboardEventThrottled = $.throttle(200, function(event)
 {
@@ -158,8 +146,7 @@ const handleKeyboardEventThrottled = $.throttle(200, function(event)
             return;
     }
     let vec = board.randomSummon();
-    showNumberWihthAnimation(vec[0], vec[1], vec[2]);
-    updateView(board);
+    updateView(board, [vec]);
     isGameOver();
 });
 document.addEventListener('keydown', handleKeyboardEventThrottled);
