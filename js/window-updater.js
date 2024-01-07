@@ -74,7 +74,7 @@ function updateView(board)
                 }
             }
         }
-    }, 200);
+    }, 150);
 
     $("#score").text(board.score);
 }
@@ -87,7 +87,27 @@ function isGameOver()
     }
     return false;
 }
-document.addEventListener('keydown', function(event)
+
+
+
+
+
+// 使用节流函数限制处理频率
+function throttle(callback, delay) {
+    let lastTime = 0;
+  
+    return function() {
+      const now = new Date().getTime();
+  
+      if (now - lastTime >= delay) {
+        callback.apply(this, arguments);
+        lastTime = now;
+      }
+    };
+  }
+  
+// 引入节流函数，限制键盘输入频率，以达到控制动画不出错的效果。
+const handleKeyboardEventThrottled = $.throttle(200, function(event)
 {
     event.preventDefault();
     if (board.getStatus())
@@ -135,15 +155,15 @@ document.addEventListener('keydown', function(event)
             }
             break;
         default:
-            setTimeout("", 200);
             return;
     }
     let vec = board.randomSummon();
     showNumberWihthAnimation(vec[0], vec[1], vec[2]);
     updateView(board);
-    setTimeout(isGameOver, 200);
-})
+    isGameOver();
+});
+document.addEventListener('keydown', handleKeyboardEventThrottled);
 document.addEventListener('DOMContentLoaded',function()
 {
     newgame();
-})
+});

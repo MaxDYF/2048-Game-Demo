@@ -15,7 +15,7 @@ function showNumberWihthAnimation(i, j, randNumber) {
         height: cellWidth,
         top: getPosTop(i, j),
         left: getPosLeft(i, j)
-    }, 200);
+    }, 100);
 }
 
 //通过动画显示移动的效果
@@ -28,6 +28,6 @@ function showMoveAnimation(fromx, fromy, tox, toy) {
     numberCell.animate({
         top: getPosTop(tox, toy),
         left: getPosLeft(tox, toy)
-    }, 200);
+    }, 100);
     
 }
