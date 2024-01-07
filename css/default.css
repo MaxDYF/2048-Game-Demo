@@ -71,6 +71,7 @@
 
 #grid-container .number-cell-0{
 	background-color: #00131b;
+	position:absolute;
 }
 #grid-container .number-cell-2{
 	border-radius:6px;

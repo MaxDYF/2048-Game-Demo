@@ -18,8 +18,7 @@ function getPosLeft(i,j){
 function newgame(){
     containerWidth=500;
     cellWidth=100;
-    cellSpace=20;
-    board.reset();
+    cellSpace=20;    
     for (let i = 0; i < N; i++)
         for (let j = 0; j < M; j++)
         {
@@ -27,12 +26,18 @@ function newgame(){
             $(gridCell).css('top', getPosTop(i, j));
             $(gridCell).css('left', getPosLeft(i, j));
         }
-	//在随机的两个单元格生成数字
-    let vec1 = board.randomSummon();
-    let vec2 = board.randomSummon();
-    showNumberWihthAnimation(vec1[0], vec1[1], vec1[2]);
-    showNumberWihthAnimation(vec2[0], vec2[1], vec2[2]);
+    board.reset();
     updateView(board);
+
+	//在随机的两个单元格生成数字
+    setTimeout(function(){
+        let vec1 = board.randomSummon();
+        let vec2 = board.randomSummon();
+        showNumberWihthAnimation(vec1[0], vec1[1], vec1[2]);
+        showNumberWihthAnimation(vec2[0], vec2[1], vec2[2]);
+        updateView(board);
+    }, 200);
+
 }
 
 function updateView(board)
@@ -40,26 +45,37 @@ function updateView(board)
     let vec = board.moveTrack;
     for (let i = 0; i < board.moveTrack.length; i++)
         showMoveAnimation(vec[i][0], vec[i][1], vec[i][2], vec[i][3]);
-    for (let i = 0; i < N; i++)
-    {
-        for (let j = 0; j < M; j++)
+    setTimeout(function(){
+        for (let i = 0; i < N; i++)
         {
-            $("#number-cell-" + i + '-' + j).remove();
-            let cmd = '<div class="number-cell-' + board.board[i][j] + '" id="number-cell-' + i + '-' + j + '"></div>';
-            //console.log(cmd);
-            $("#grid-container").append(cmd);
-            let numberCell = $("#number-cell-" + i + '-' + j);
-            numberCell.css('top', getPosTop(i, j));
-            numberCell.css('left', getPosLeft(i, j));
-            let x = board.board[i][j];
-            if (x != 0)
+            for (let j = 0; j < M; j++)
             {
-                numberCell.css('width', x > 0 ? cellWidth : 0);
-				numberCell.css('height', x > 0 ? cellWidth : 0);
-                numberCell.text(board.board[i][j]);
+                $("#number-cell-" + i + '-' + j).remove();
+                let cmd = '<div class="number-cell-' + board.board[i][j] + '" id="number-cell-' + i + '-' + j + '"></div>';
+                //console.log(cmd);
+                $("#grid-container").append(cmd);
+                let numberCell = $("#number-cell-" + i + '-' + j);
+                
+                let x = board.board[i][j];
+                if (x > 0)
+                {
+                    numberCell.css('top', getPosTop(i, j));
+                    numberCell.css('left', getPosLeft(i, j));
+                    numberCell.css('width', cellWidth);
+                    numberCell.css('height', cellWidth);
+                    numberCell.text(board.board[i][j]);
+                }
+                else
+                {
+                    numberCell.css('top', getPosTop(i, j) + cellWidth / 2);
+                    numberCell.css('left', getPosLeft(i, j) + cellWidth / 2);
+                    numberCell.css('width', 0);
+                    numberCell.css('height', 0);                
+                }
             }
         }
-    }
+    }, 200);
+
     $("#score").text(board.score);
 }
 function isGameOver()
@@ -119,13 +135,13 @@ document.addEventListener('keydown', function(event)
             }
             break;
         default:
+            setTimeout("", 200);
             return;
     }
     let vec = board.randomSummon();
     showNumberWihthAnimation(vec[0], vec[1], vec[2]);
-    board.randomSummon();
     updateView(board);
-    isGameOver();
+    setTimeout(isGameOver, 200);
 })
 document.addEventListener('DOMContentLoaded',function()
 {

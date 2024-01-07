@@ -178,6 +178,7 @@ class Board
                 this.board[i][j] = 0;
         this.score = 0;
         this.stage = 1;
+        this.moveTrack = [];
         return false;
     }
 }
