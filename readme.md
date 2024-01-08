@@ -3,4 +3,4 @@ A simple New-learner-made 2048 game demo.
 
 Based on html/javascript/css.
 
-Using jQuery 3.5.0.
+Using jQuery 3.7.1.
